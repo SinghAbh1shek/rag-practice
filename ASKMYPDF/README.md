@@ -35,6 +35,11 @@ Use `pip` to install the necessary dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+If a Python module is missing and not listed in requirements.txt, install it manually:
+
+```bash
+pip install <module_name>
+```
 
 
 ### 3. Set Up `.env` File
