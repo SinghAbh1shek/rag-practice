@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>To-Do App</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+.container {
+  width: 500px;
+  margin: 0 auto;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>To-Do List</h1>
+  <input type="text" id="taskInput" placeholder="Enter task">
+  <button onclick="addTask()">Add Task</button>
+  <ul id="taskList"></ul>
+</div>
+
+<script>
+let taskList = [];
+
+function addTask() {
+  const taskInput = document.getElementById("taskInput");
+  const task = taskInput.value;
+  if (task !== "") {
+    taskList.push(task);
+    updateTaskList();
+    taskInput.value = "";
+  }
+}
+
+function updateTaskList() {
+  const taskListElement = document.getElementById("taskList");
+  taskListElement.innerHTML = ""; // Clear existing list
+  taskList.forEach(task => {
+    const listItem = document.createElement("li");
+    listItem.textContent = task;
+    taskListElement.appendChild(listItem);
+  });
+}
+</script>
+</body>
+</html>
