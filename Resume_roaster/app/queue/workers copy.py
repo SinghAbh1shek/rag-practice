@@ -8,8 +8,7 @@ import base64
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="",
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+    api_key=""
 )
 
 # Function to encode the image
@@ -48,33 +47,28 @@ async def process_file(id: str, file_path: str):
     
     images_base64 = [encode_image(img) for img in images]
 
-    response = client.chat.completions.create(
-        model="gemini-2.0-flash",
-        messages=[
+    result = client.responses.create(
+        model="gpt-4.1",
+        input=[
             {
-            "role": "user",
-            "content": [
-                {
-                "type": "text",
-                "text": "Roast the resume below. Don't hold back. Start by addressing the person by name, like 'Hey [Name], let's roast your resume.' Use dark humour if you want, but do not use any abusive language. Avoid unnecessary chatbot-style headings. Provide professional advice at the end. Also, include an apology in case the roast hurts. Note: Do not use asterisks in the response.",
-                },
-                {
-                "type": "image_url",
-                "image_url": {
-                    "url":  f"data:image/jpeg;base64,{images_base64[0]}"
-                },
-                },
-            ],
+                "role": "user",
+                "content": [
+                    { "type": "input_text", "text": "Roast this resume" },
+                    {
+                        "type": "input_image",
+                        "image_url": f"data:image/jpeg;base64,{images_base64[0]}",
+                    },
+                ],
             }
         ],
-        )
-
-    # print(response.choices[0].message.content)
+    )
     
+    
+    # print(result.output_text)
 
     await files_collection.update_one({'_id': ObjectId(id)} , {
         '$set': {
             "status": "Processed!",
-            "result": response.choices[0].message.content
+            "result": result.output_text
         }
     })
